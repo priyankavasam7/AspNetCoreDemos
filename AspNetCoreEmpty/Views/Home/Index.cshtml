@@ -1,0 +1,59 @@
+﻿@* @model AspNetCoreEmpty.Models.Customer; *@
+
+@model AspNetCoreEmpty.ViewModels.HomeIndexViewModel;
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Demo</title>
+    </head>
+    <body>
+        <h1>@Model.Title</h1>
+        <hr />
+        <h3> Customer Details</h3>
+        <p>Id : @Model.Customer.Id</p>
+        <p>Name : @Model.Customer.Name</p>
+       
+
+      
+    </body>
+    </html>
+
+    @* Inside body -- code*@
+    @* -------------------------------------------- *@
+    @*Method 1: ViewData*@
+    @*  @{
+        var customer = ViewData["customer"] as AspNetCoreEmpty.Models.Customer;
+        } 
+
+        <h1>@ViewData["Title"]</h1> 
+        <h3> Customer Details</h3>
+        <p>
+            Id : @customer.Id
+        </p>
+
+        <p>
+            Name : @customer.Name
+        </p> 
+     *@ 
+
+    @* -------------------------------------------- *@
+    @*Method 2 : ViewBag*@
+
+    @* <h1>@ViewBag.Title</h1>
+    <hr />
+    <h3> Customer Details</h3>
+    <p>
+        Id : @ViewBag.Customer.Id
+    </p>
+    <p>
+        Name : @ViewBag.Customer.Name
+    </p> 
+    *@
+
+    @* -------------------------------------------- *@
+    @*Method 3 : Returning Customer Object*@
+
+    @* <h3> Customer Details</h3>
+    <p>Id : @Model.Id</p>
+    <p>Name : @Model.Name</p>
+     *@

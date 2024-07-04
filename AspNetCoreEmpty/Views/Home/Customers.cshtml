@@ -1,0 +1,36 @@
+﻿@model IEnumerable<AspNetCoreEmpty.Models.Customer>;
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>List Demo</title>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach(var customer in Model)
+            {
+                <tr>
+                    <td>
+                        @customer.Id
+                    </td>
+                    <td>
+                        @customer.Name
+                    </td>
+                </tr>
+                
+            }
+            
+            </tbody>
+        </table>
+    </body>
+    </html>
