@@ -1,4 +1,5 @@
 ﻿using Books.API.Models;
+using System.Numerics;
 
 namespace Books.API.Repository
 {
@@ -9,7 +10,8 @@ namespace Books.API.Repository
         { 
             _bookList.Add(new Book { Name="Secret", Author="John", Description="About secrecy", Amount=345.80});
             _bookList.Add(new Book { Name = "Start With Why", Author = "Simon Seik", Description = "About startups and leadership skills", Amount = 245 });
-            _bookList.Add(new Book { Name = "Rich Dad Poor Dad", Author = "Robert kiosaki", Description = "Financial Education", Amount = 425.60 });  
+            _bookList.Add(new Book { Name = "Rich Dad Poor Dad", Author = "Robert kiosaki", Description = "Financial Education", Amount = 425.60 });
+            _bookList.Add(new Book { Name = "Atomic Habits", Author = "Jerman Housell", Description = "Improving the daily habits", Amount = 500 });
         }
         public bool AddBook(Book book)
         {
@@ -21,6 +23,28 @@ namespace Books.API.Repository
             }
             return false;
 
+        }
+
+        public Book GetCostliestBook()
+        {
+
+            var costlyBook = new Book();
+            costlyBook.Amount = -1;
+            foreach (var book in _bookList)
+            {
+                if (book.Amount > costlyBook.Amount) { costlyBook = book; }
+            }
+            return costlyBook;
+        }
+
+        public bool DeleteAllBooks()
+        {
+            if (_bookList.Count > 0)
+            {
+                _bookList.Clear();
+                return true;
+            }
+            return false;
         }
 
         public bool DeleteBook(Guid id)
@@ -36,7 +60,9 @@ namespace Books.API.Repository
 
         public IEnumerable<Book> GetAllBooks()
         {
-            return _bookList;
+            if(_bookList.Count > 0) return _bookList;
+            return null;
+
         }
 
         public Book GetBookById(Guid id)
@@ -45,6 +71,41 @@ namespace Books.API.Repository
             return book;
         }
 
+        public IEnumerable<Book> GetCostlyAndCheapBooks()
+        {
+            List<Book> books = new List<Book>();
+            Book minBook = _bookList.First();
+            foreach (var book in _bookList)
+            {
+                if (book.Amount < minBook.Amount)
+                {
+                    minBook = book;
+                }
+            }
+            books.Add(minBook);
+            books.Add(GetCostliestBook());
+            if (books.Count == 0)
+            {
+                return null;
+            }
+            return books;
+        }
+
+        public IEnumerable<Book> GetBooksStartingWithA()
+        {
+            List<Book> books = new List<Book>();
+            foreach(var book in _bookList)
+            {
+                var bookName=book.Name.ToLower();
+                if (bookName.StartsWith('a'))
+                {
+                    books.Add(book);
+                }
+            }
+            if (books.Count == 0) return null;
+            return books;
+        }
+        
         public Book UpdateBook(Guid id, Book book)
         {
             var existingBook= _bookList.FirstOrDefault(b=> b.Id==id);
@@ -57,6 +118,21 @@ namespace Books.API.Repository
                 return existingBook;
             }
             return null;
+        }
+
+        public IEnumerable<Book> GetBooksBetweenMaxAndMinAmount(double maxAmount, double minAmount)
+        {
+            List<Book> books= new List<Book>();
+            foreach (var book in _bookList)
+            { 
+                if (book.Amount < maxAmount && book.Amount > minAmount)
+                {
+                    books.Add(book);
+                }
+            }
+            if (books.Count == 0) return null;
+            return books;
+
         }
     }
 }

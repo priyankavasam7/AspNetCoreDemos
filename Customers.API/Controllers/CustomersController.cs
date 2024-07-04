@@ -9,8 +9,8 @@ namespace Customers.API.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        ICustomerRepository _customerRepository;
-        public CustomersController(ICustomerRepository customerRepository)
+        ICustomerEFRepository _customerRepository;
+        public CustomersController(ICustomerEFRepository customerRepository)
         {
             _customerRepository = customerRepository;
         }
@@ -23,7 +23,7 @@ namespace Customers.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCustomer(Guid id)
+        public IActionResult GetCustomer(int id)
         {
             var customer = _customerRepository.GetCustomerById(id);
             if (customer == null)
@@ -34,19 +34,20 @@ namespace Customers.API.Controllers
         }
         
         [HttpPost]
-        public IActionResult AddCustomer([FromBody]Customer customer)
+        public IActionResult AddCustomer([FromBody]CustomerEFCore customer)
         {
             var isCustomerAdded = _customerRepository.AddCustomer(customer);
 
             if(isCustomerAdded)
             {
-                return Ok(customer);
+                //return Ok(customer);
+                return Ok($"Customer is added successfully!!");
             }
             return StatusCode(500);  
         }
         
         [HttpPut("{id}")]
-        public IActionResult UpdateCustomer([FromRoute] Guid id, [FromBody] Customer customer)
+        public IActionResult UpdateCustomer([FromRoute] int id, [FromBody] CustomerEFCore customer)
         {
             var updateCustomer=_customerRepository.UpdateCustomer(id, customer);
             if (updateCustomer==null)
@@ -57,7 +58,7 @@ namespace Customers.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCustomer(Guid id)
+        public IActionResult DeleteCustomer(int id)
         {
             var customerDeleted= _customerRepository.DeleteCustomer(id);
             if (customerDeleted)

@@ -18,7 +18,11 @@ namespace Books.API.Controllers
         public IActionResult GetAllBooks()
         { 
             var books=_bookRepository.GetAllBooks();
-            return Ok(books);
+            if (books != null)
+            {
+                return Ok(books);
+            }
+            return Ok("There are no books Yet!!");
         }
         [HttpGet("{id}")]
         public IActionResult GetBook(Guid id)
@@ -30,6 +34,54 @@ namespace Books.API.Controllers
             }
             return NotFound($"Requested Book with id = {id} is Not Found");
         }
+
+        [HttpGet]
+        [Route("costlybook")]
+        public IActionResult GetCostliestBook()
+        {
+            var book = _bookRepository.GetCostliestBook();
+            if (book != null)
+            {
+                return Ok(book);
+            }
+            return NotFound("Books not found!!");
+        }
+       
+        [HttpGet]
+        [Route("CostlyAndCheapBooks")]
+        public IActionResult GetCostlyAndCheapBooks()
+        {
+            var books= _bookRepository.GetCostlyAndCheapBooks();
+            if(books != null)
+            {
+                return Ok(books);
+            }
+            return NotFound("Books Not Found!!");
+        }
+
+        [HttpGet]
+        [Route("BooksStartingWithA")]
+        public IActionResult GetBooksStartingWithA()
+        {
+            var books=_bookRepository.GetBooksStartingWithA();
+            if(books != null)
+            {
+                return Ok(books);
+            }
+            return NotFound("Books starting with 'A' are Not Found");
+        }
+
+        [HttpGet("{minAmount}:{maxAmount}")]
+        public IActionResult GetBooksBetweenMaxAndMinAmount(double maxAmount, double minAmount)
+        {
+            var books=_bookRepository.GetBooksBetweenMaxAndMinAmount(maxAmount, minAmount);
+            if(books != null)
+            {
+                return Ok(books);
+            }
+            return NotFound("Books in the requested price range are Not Found!!");
+        }
+
         [HttpPost]
         public IActionResult AddBook([FromBody]Book book)
         {
@@ -40,6 +92,7 @@ namespace Books.API.Controllers
             }
             return StatusCode(500);
         }
+        
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(Guid id)
         {
@@ -50,6 +103,18 @@ namespace Books.API.Controllers
             }
             return NotFound($"The Book with Id = {id} is Not Found");
         }
+        
+        [HttpDelete]
+        public IActionResult DeleteAllBooks()
+        {
+            var AreBooksDeleted= _bookRepository.DeleteAllBooks();
+            if (AreBooksDeleted)
+            {
+                return Ok("All books deleted successfully!!");
+            }
+            return StatusCode(500);
+        }
+
         [HttpPut("{id}")]
         public IActionResult UpdateBook(Guid id,Book book)
         {
@@ -60,5 +125,6 @@ namespace Books.API.Controllers
             }
             return NotFound($"The Book with Id = {id} is Not Found");
         }
+
     }
 }

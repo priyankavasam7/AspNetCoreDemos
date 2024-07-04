@@ -1,4 +1,6 @@
+using Customers.API.Data;
 using Customers.API.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Customers.API
 {
@@ -11,7 +13,11 @@ namespace Customers.API
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddSingleton<ICustomerRepository,CustomerInMemoryRepository>();
+            builder.Services.AddScoped<ICustomerEFRepository,CustomerEFCoreInMemeoryRepository>();
+            builder.Services.AddDbContext<CustomerDbContext>(options=>
+            {
+                options.UseInMemoryDatabase("CustomerDB");
+            });
 
             var app = builder.Build();
 

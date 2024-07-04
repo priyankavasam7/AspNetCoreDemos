@@ -1,4 +1,6 @@
-﻿namespace Customers.API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Customers.API.Models
 {
     public class Customer
     {

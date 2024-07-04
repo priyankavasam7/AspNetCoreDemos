@@ -9,6 +9,11 @@ namespace Books.API.Repository
         public bool AddBook(Book book);
         public Book UpdateBook(Guid id,Book book);
         public bool DeleteBook(Guid id);
+        public bool DeleteAllBooks();
+        public Book GetCostliestBook();
+        public IEnumerable<Book> GetCostlyAndCheapBooks();
+        public IEnumerable<Book> GetBooksStartingWithA();
+        public IEnumerable <Book> GetBooksBetweenMaxAndMinAmount(double maxAmount, double minAmount);
 
     }
 }
